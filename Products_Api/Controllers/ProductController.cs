@@ -32,18 +32,18 @@ namespace Products_Api.Controllers
         [Route("Products")]
         public async Task<IActionResult> Product(int pId,string pName,string pDescription,decimal pPrice,string jsonstr)
         {
-            List<ProductData> ProductsWithKey = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ProductData>>(jsonstr);
+            List<ProductData> Products = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ProductData>>(jsonstr);
             List<ProductData> products1 = new List<ProductData>();
             try
             {                
                 products1.Add(new ProductData { id = pId+1, name = pName, description = pDescription, price = pPrice });
-                ProductsWithKey.AddRange(products1);
-                string result = JsonConvert.SerializeObject(ProductsWithKey);
+                Products.AddRange(products1);
+                string result = JsonConvert.SerializeObject(Products);
                 return Ok(result);
             }
             catch (Exception ex)
             {
-                return Ok(ProductsWithKey);
+                return Ok(Products);
             }         
         }
 
@@ -55,17 +55,17 @@ namespace Products_Api.Controllers
             List<ProductData> products1 = new List<ProductData>();
             try
             {
-                List<ProductData> ProductsWithKey = JsonConvert.DeserializeObject<List<ProductData>>(jsonstr);
-                for (var i = 0; i < ProductsWithKey.Count; i++)
+                List<ProductData> Products = JsonConvert.DeserializeObject<List<ProductData>>(jsonstr);
+                for (var i = 0; i < Products.Count; i++)
                 {
                     if(i==pId)
                     {
-                        ProductsWithKey[i].name = pName;
-                        ProductsWithKey[i].description = pDescription;
-                        ProductsWithKey[i].price = pPrice;
+                        Products[i].name = pName;
+                        Products[i].description = pDescription;
+                        Products[i].price = pPrice;
                     }
                 }
-                string result = JsonConvert.SerializeObject(ProductsWithKey);
+                string result = JsonConvert.SerializeObject(Products);
                 return Ok(result);
             }
             catch(Exception ex)
@@ -79,13 +79,13 @@ namespace Products_Api.Controllers
         [Route("Products")]
         public async Task<IActionResult> Products_Delete(int pId, string jsonstr)
         {            
-            List<ProductData> ProductsWithKey = JsonConvert.DeserializeObject<List<ProductData>>(jsonstr);
-            ProductsWithKey.RemoveAt(pId);
-            for (var i = 0; i < ProductsWithKey.Count; i++)
+            List<ProductData> Products = JsonConvert.DeserializeObject<List<ProductData>>(jsonstr);
+            Products.RemoveAt(pId);
+            for (var i = 0; i < Products.Count; i++)
             {   
-                ProductsWithKey[i].id = i+1;                    
+                Products[i].id = i+1;                    
             }
-            return Ok(ProductsWithKey);
+            return Ok(Products);
         }
 
 
